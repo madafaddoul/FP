@@ -1,9 +1,12 @@
 -- func_queue_test.hs
 import FuncQueue
+import Data.Time
 
 -- Test the functional queue implementation
 main :: IO ()
 main = do
+    start <- getCurrentTime
+
     let queue1 = emptyQueue
     let queue2 = enqueue 10 queue1
     let queue3 = enqueue 20 queue2
@@ -22,15 +25,7 @@ main = do
     let queue5 = enqueue 30 queue4
     let queue6 = enqueue 40 queue5
     print $ "Queue after enqueuing 30 and 40: " ++ show queue6
-    
-    let (dequeuedElement2, queue7) = dequeue queue6
-    print $ "Dequeued element: " ++ show dequeuedElement2
-    print $ "Queue after dequeuing: " ++ show queue7
-    
-    let (dequeuedElement3, queue8) = dequeue queue7
-    print $ "Dequeued element: " ++ show dequeuedElement3
-    print $ "Queue after dequeuing: " ++ show queue8
-    
-    let (dequeuedElement4, queue9) = dequeue queue8
-    print $ "Dequeued element: " ++ show dequeuedElement4
-    print $ "Is queue9 empty? " ++ show (isEmpty queue9)
+
+    end <- getCurrentTime
+    let diff = diffUTCTime end start
+    print $ "Time taken: " ++ show diff
