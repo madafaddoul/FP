@@ -78,11 +78,11 @@ public:
     }
 
     // Apply a function to all values in the HashMap
-    void mapValues(const std::function<std::string(const std::string&)>& func) {
-        for (auto& pair : map) {
-            pair.second = func(pair.second);
-        }
-    }
+    // void mapValues(const std::function <std::string(const std::string&)>& func) {
+    //     for (auto& pair : map) {
+    //         pair.second = func(pair.second);
+    //     }
+    // }
 
 private:
     std::unordered_map<std::string, std::string> map;
