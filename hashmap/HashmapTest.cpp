@@ -3,8 +3,8 @@
 
 void testInsert() {
     HashMap hm;
-    hm.insert("key1", "value1");
-    if (hm.lookup("key1") == "value1") {
+    HashMap hm2 = hm.insert("key1", "value1");
+    if (hm2.lookup("key1") == "value1" && hm.lookup("key1") == "") {
         std::cout << "testInsert passed" << std::endl;
     } else {
         std::cout << "testInsert failed" << std::endl;
@@ -13,9 +13,8 @@ void testInsert() {
 
 void testLookup() {
     HashMap hm;
-    hm.insert("key1", "value1");
-    hm.insert("key2", "value2");
-    if (hm.lookup("key1") == "value1" && hm.lookup("key2") == "value2" && hm.lookup("key3") == "") {
+    HashMap hm2 = hm.insert("key1", "value1").insert("key2", "value2");
+    if (hm2.lookup("key1") == "value1" && hm2.lookup("key2") == "value2" && hm2.lookup("key3") == "") {
         std::cout << "testLookup passed" << std::endl;
     } else {
         std::cout << "testLookup failed" << std::endl;
@@ -23,11 +22,9 @@ void testLookup() {
 }
 
 void testDelete() {
-    HashMap hm;
-    hm.insert("key1", "value1");
-    hm.insert("key2", "value2");
-    hm.deleteKey("key1");
-    if (hm.lookup("key1") == "" && hm.lookup("key2") == "value2") {
+    HashMap hm = HashMap::fromList({{"key1", "value1"}, {"key2", "value2"}});
+    HashMap hm2 = hm.deleteKey("key1");
+    if (hm2.lookup("key1") == "" && hm2.lookup("key2") == "value2" && hm.lookup("key1") == "value1") {
         std::cout << "testDelete passed" << std::endl;
     } else {
         std::cout << "testDelete failed" << std::endl;
@@ -35,8 +32,7 @@ void testDelete() {
 }
 
 void testFromList() {
-    HashMap hm;
-    hm.fromList({{"key1", "value1"}, {"key2", "value2"}});
+    HashMap hm = HashMap::fromList({{"key1", "value1"}, {"key2", "value2"}});
     if (hm.lookup("key1") == "value1" && hm.lookup("key2") == "value2") {
         std::cout << "testFromList passed" << std::endl;
     } else {
@@ -45,8 +41,7 @@ void testFromList() {
 }
 
 void testToList() {
-    HashMap hm;
-    hm.fromList({{"key1", "value1"}, {"key2", "value2"}});
+    HashMap hm = HashMap::fromList({{"key1", "value1"}, {"key2", "value2"}});
     auto list = hm.toList();
     std::unordered_map<std::string, std::string> expected = {{"key1", "value1"}, {"key2", "value2"}};
     bool passed = true;
@@ -63,11 +58,36 @@ void testToList() {
     }
 }
 
+// Additional tests to verify purely functional behavior
+void testPurelyFunctionalInsert() {
+    HashMap hm;
+    HashMap hm2 = hm.insert("key1", "value1");
+    HashMap hm3 = hm.insert("key2", "value2");
+    if (hm2.lookup("key1") == "value1" && hm3.lookup("key2") == "value2" && hm.lookup("key1") == "" && hm.lookup("key2") == "") {
+        std::cout << "testPurelyFunctionalInsert passed" << std::endl;
+    } else {
+        std::cout << "testPurelyFunctionalInsert failed" << std::endl;
+    }
+}
+
+void testPurelyFunctionalDelete() {
+    HashMap hm = HashMap::fromList({{"key1", "value1"}, {"key2", "value2"}});
+    HashMap hm2 = hm.deleteKey("key1");
+    HashMap hm3 = hm.deleteKey("key2");
+    if (hm2.lookup("key1") == "" && hm2.lookup("key2") == "value2" && hm3.lookup("key1") == "value1" && hm3.lookup("key2") == "" && hm.lookup("key1") == "value1" && hm.lookup("key2") == "value2") {
+        std::cout << "testPurelyFunctionalDelete passed" << std::endl;
+    } else {
+        std::cout << "testPurelyFunctionalDelete failed" << std::endl;
+    }
+}
+
 int main() {
     testInsert();
     testLookup();
     testDelete();
     testFromList();
     testToList();
+    testPurelyFunctionalInsert();
+    testPurelyFunctionalDelete();
     return 0;
 }
