@@ -1,37 +1,52 @@
-// imperative_stack_test.cpp
+// ImperativeStackTest.cpp
 #include "ImperativeStack.cpp"
 #include <iostream>
 #include <chrono>
-
 using namespace std;
 using namespace std::chrono;
 
 int main() {
-    Stack<int> stack;
-
-    // Start time
     auto start = high_resolution_clock::now();
 
-    // Push elements onto the stack
+    Stack<int> stack;
     stack.push(10);
     stack.push(20);
-    cout << "Top element after pushing 10 and 20: " << stack.peek() << endl;
+    cout << "Stack after pushing 10 and 20: ";
+    for (int val : stack.toList()) cout << val << " ";
+    cout << endl;
 
-    // Pop an element
-    cout << "Popped element: " << stack.pop() << endl;
+    cout << "Top element (peek): " << stack.peek() << endl;
 
-    // Peek at the top element
-    cout << "Top element after popping: " << stack.peek() << endl;
+    int poppedElement = stack.pop();
+    cout << "Popped element: " << poppedElement << endl;
 
-    // Check if the stack is empty
-    cout << "Is the stack empty? " << (stack.isEmpty() ? "Yes" : "No") << endl;
+    cout << "Stack after popping: ";
+    for (int val : stack.toList()) cout << val << " ";
+    cout << endl;
 
-    // End time
+    // Additional tests for new functions
+    cout << "Is stack empty: " << stack.isEmpty() << endl;
+    cout << "Size of stack: " << stack.size() << endl;
+
+    stack.reverse();
+    cout << "Stack after reversing: ";
+    for (int val : stack.toList()) cout << val << " ";
+    cout << endl;
+
+    vector<int> list = {1, 2, 3};
+    stack.fromList(list);
+    cout << "Stack from list [1, 2, 3]: ";
+    for (int val : stack.toList()) cout << val << " ";
+    cout << endl;
+
+    stack.map([](int x) { return x + 1; });
+    cout << "Stack after mapping (+1): ";
+    for (int val : stack.toList()) cout << val << " ";
+    cout << endl;
+
     auto end = high_resolution_clock::now();
-
-    // Calculate the duration
-    duration<double> duration = end - start;
-    cout << "Time taken: " << duration.count() << " seconds" << endl;
+    auto diff = duration_cast<microseconds>(end - start).count();
+    cout << "Time taken: " << diff << " microseconds" << endl;
 
     return 0;
 }
