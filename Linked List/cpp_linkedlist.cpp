@@ -249,6 +249,13 @@ public:
         }
         cout << "nullptr" << endl;
     }
+
+
+
+
+
+
+    
 };
 
 int main() {
@@ -263,12 +270,12 @@ int main() {
     list.updateAt(2, 6);
     list.print(); 
 
-    cout << "Element at index 2: " << list.elementAt(2) << endl; // 6
+    cout << "Element at index 2: " << list.elementAt(2) << endl; 
 
     list.deleteValue(6);
     list.print(); 
 
-    cout << "Search for 3: " << (list.search(3) ? "Found" : "Not Found") << endl; // Found
+    cout << "Search for 3: " << (list.search(3) ? "Found" : "Not Found") << endl; 
 
     int arr[4];
     list.toList(arr, 4);
