@@ -1,4 +1,4 @@
--- Define a linked list where each node has a value and a reference to the next node
+
 data LinkedList a = Empty              
                   | Node a (LinkedList a) 
     deriving (Show, Eq) 
@@ -44,7 +44,7 @@ concatLL :: LinkedList a -> LinkedList a -> LinkedList a
 concatLL Empty ys = ys
 concatLL (Node v next) ys = Node v (concatLL next ys)
 
--- Apply a function to each element in the list
+-- Apply a function to each element in the list: fmap for linked lists
 mapLL :: (a -> b) -> LinkedList a -> LinkedList b
 mapLL _ Empty = Empty
 mapLL f (Node v next) = Node (f v) (mapLL f next)
@@ -56,7 +56,7 @@ filterLL p (Node v next)
     | p v       = Node v (filterLL p next)
     | otherwise = filterLL p next
 
--- Reduce the list to a single value using a binary function
+--Reduce the list to a single value using a binary function
 foldLL :: (b -> a -> b) -> b -> LinkedList a -> b
 foldLL _ acc Empty = acc
 foldLL f acc (Node v next) = foldLL f (f acc v) next
@@ -102,3 +102,9 @@ reverseLL lst = reverseHelper lst Empty
   where
     reverseHelper Empty acc = acc
     reverseHelper (Node v next) acc = reverseHelper next (Node v acc)
+
+-- Combine two lists using a binary function
+zipWithLL :: (a -> b -> c) -> LinkedList a -> LinkedList b -> LinkedList c
+zipWithLL _ Empty _ = Empty
+zipWithLL _ _ Empty = Empty
+zipWithLL f (Node v1 next1) (Node v2 next2) = Node (f v1 v2) (zipWithLL f next1 next2) 
