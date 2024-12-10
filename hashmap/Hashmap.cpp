@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 class HashMap {
 public:
@@ -37,6 +38,50 @@ public:
             list.push_back(pair);
         }
         return list;
+    }
+
+    // Update the value associated with a key in the HashMap
+    void update(const std::string& key, const std::string& value) {
+        insert(key, value);
+    }
+
+    // Merge two HashMaps
+    void merge(const HashMap& other) {
+        for (const auto& pair : other.map) {
+            if (map.find(pair.first) == map.end()) {
+                map[pair.first] = pair.second;
+            }
+        }
+    }
+
+    // Retrieve a list of all keys in the HashMap
+    std::vector<std::string> keys() const {
+        std::vector<std::string> keys;
+        for (const auto& pair : map) {
+            keys.push_back(pair.first);
+        }
+        return keys;
+    }
+
+    // Retrieve a list of all values in the HashMap
+    std::vector<std::string> values() const {
+        std::vector<std::string> values;
+        for (const auto& pair : map) {
+            values.push_back(pair.second);
+        }
+        return values;
+    }
+
+    // Get the number of key-value pairs in the HashMap
+    size_t size() const {
+        return map.size();
+    }
+
+    // Apply a function to all values in the HashMap
+    void mapValues(const std::function<std::string(const std::string&)>& func) {
+        for (auto& pair : map) {
+            pair.second = func(pair.second);
+        }
     }
 
 private:
