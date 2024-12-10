@@ -1,47 +1,70 @@
 // ImperativeQueue.cpp
-#include <stack>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 #include <stdexcept>
+using namespace std;
 
+// Queue Implementation
 template <typename T>
 class Queue {
+private:
+    vector<T> elements;
+
 public:
-    void enqueue(T x) {
-        inStack.push(x);
+    // Enqueue an element onto the queue
+    void enqueue(T value) {
+        elements.push_back(value);
     }
 
+    // Dequeue an element from the queue
     T dequeue() {
-        if (outStack.empty()) {
-            while (!inStack.empty()) {
-                outStack.push(inStack.top());
-                inStack.pop();
-            }
+        if (elements.empty()) {
+            throw runtime_error("Dequeue from an empty queue");
         }
-        if (outStack.empty()) {
-            throw std::runtime_error("Dequeue from an empty queue");
-        }
-        T front = outStack.top();
-        outStack.pop();
+        T front = elements.front();
+        elements.erase(elements.begin());
         return front;
     }
 
-    T peek() {
-        if (outStack.empty()) {
-            while (!inStack.empty()) {
-                outStack.push(inStack.top());
-                inStack.pop();
-            }
+    // Peek at the front element of the queue
+    T peek() const {
+        if (elements.empty()) {
+            throw runtime_error("Peek from an empty queue");
         }
-        if (outStack.empty()) {
-            throw std::runtime_error("Peek from an empty queue");
-        }
-        return outStack.top();
+        return elements.front();
     }
 
+    // Check if the queue is empty
     bool isEmpty() const {
-        return inStack.empty() && outStack.empty();
+        return elements.empty();
     }
 
-private:
-    std::stack<T> inStack;
-    std::stack<T> outStack;
+    // Get the size of the queue
+    size_t size() const {
+        return elements.size();
+    }
+
+    // Reverse the queue
+    void reverse() {
+        std::reverse(elements.begin(), elements.end());
+    }
+
+    // Convert the queue to a list
+    vector<T> toList() const {
+        return elements;
+    }
+
+    // Create a queue from a list
+    void fromList(const vector<T>& list) {
+        elements = list;
+    }
+
+    // Map a function over the queue
+    template <typename Func>
+    void map(Func func) {
+        for (auto& element : elements) {
+            element = func(element);
+        }
+    }
 };

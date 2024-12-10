@@ -1,30 +1,47 @@
 -- FuncQueue.hs
 module FuncQueue where
 
--- Functional Queue Implementation using two stacks
-data Queue a = Queue [a] [a] deriving (Show)
+-- Define the Queue data type
+data Queue a = Queue [a] deriving (Show)
 
 -- Create an empty queue
 emptyQueue :: Queue a
-emptyQueue = Queue [] []
+emptyQueue = Queue []
 
--- Enqueue an element
+-- Enqueue an element onto the queue
 enqueue :: a -> Queue a -> Queue a
-enqueue x (Queue front back) = Queue front (x:back)
+enqueue x (Queue xs) = Queue (xs ++ [x])
 
--- Dequeue an element
+-- Dequeue an element from the queue
 dequeue :: Queue a -> (a, Queue a)
-dequeue (Queue [] []) = error "Dequeue from an empty queue"
-dequeue (Queue [] back) = dequeue (Queue (reverse back) [])
-dequeue (Queue (x:xs) back) = (x, Queue xs back)
+dequeue (Queue [])     = error "Dequeue from an empty queue"
+dequeue (Queue (x:xs)) = (x, Queue xs)
 
--- Peek at the front element
+-- Peek at the front element of the queue
 peek :: Queue a -> a
-peek (Queue [] []) = error "Peek from an empty queue"
-peek (Queue [] back) = head (reverse back)
-peek (Queue (x:_) _) = x
+peek (Queue [])     = error "Peek from an empty queue"
+peek (Queue (x:_))  = x
 
 -- Check if the queue is empty
 isEmpty :: Queue a -> Bool
-isEmpty (Queue [] []) = True
-isEmpty _             = False
+isEmpty (Queue xs) = null xs
+
+-- Get the size of the queue
+size :: Queue a -> Int
+size (Queue xs) = length xs
+
+-- Reverse the queue
+reverseQueue :: Queue a -> Queue a
+reverseQueue (Queue xs) = Queue (reverse xs)
+
+-- Convert the queue to a list
+toList :: Queue a -> [a]
+toList (Queue xs) = xs
+
+-- Create a queue from a list
+fromList :: [a] -> Queue a
+fromList xs = Queue xs
+
+-- Map a function over the queue
+mapQueue :: (a -> b) -> Queue a -> Queue b
+mapQueue f (Queue xs) = Queue (map f xs)

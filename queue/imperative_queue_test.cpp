@@ -1,46 +1,52 @@
-// imperative_queue_test.cpp
+// ImperativeQueueTest.cpp
 #include "ImperativeQueue.cpp"
 #include <iostream>
 #include <chrono>
-
 using namespace std;
 using namespace std::chrono;
 
 int main() {
-    Queue<int> queue;
-
-    // Start time
     auto start = high_resolution_clock::now();
 
-    // Enqueue elements
+    Queue<int> queue;
     queue.enqueue(10);
     queue.enqueue(20);
-    cout << "Queue after enqueuing 10 and 20: " << queue.peek() << endl;
-    cout << "Is queue empty? " << (queue.isEmpty() ? "Yes" : "No") << endl;
+    cout << "Queue after enqueuing 10 and 20: ";
+    for (int val : queue.toList()) cout << val << " ";
+    cout << endl;
 
-    // Additional tests
-    queue.enqueue(30);
-    queue.enqueue(40);
-    cout << "Queue after enqueuing 30 and 40: " << queue.peek() << endl;
+    cout << "Front element (peek): " << queue.peek() << endl;
 
     int dequeuedElement = queue.dequeue();
     cout << "Dequeued element: " << dequeuedElement << endl;
-    cout << "Queue after dequeuing: " << queue.peek() << endl;
 
-    dequeuedElement = queue.dequeue();
-    cout << "Dequeued element: " << dequeuedElement << endl;
-    cout << "Queue after dequeuing: " << queue.peek() << endl;
+    cout << "Queue after dequeuing: ";
+    for (int val : queue.toList()) cout << val << " ";
+    cout << endl;
 
-    dequeuedElement = queue.dequeue();
-    cout << "Dequeued element: " << dequeuedElement << endl;
-    cout << "Is queue empty? " << (queue.isEmpty() ? "Yes" : "No") << endl;
+    // Additional tests
+    cout << "Is queue empty: " << queue.isEmpty() << endl;
+    cout << "Size of queue: " << queue.size() << endl;
 
-    // End time
+    queue.reverse();
+    cout << "Queue after reversing: ";
+    for (int val : queue.toList()) cout << val << " ";
+    cout << endl;
+
+    vector<int> list = {1, 2, 3};
+    queue.fromList(list);
+    cout << "Queue from list [1, 2, 3]: ";
+    for (int val : queue.toList()) cout << val << " ";
+    cout << endl;
+
+    queue.map([](int x) { return x + 1; });
+    cout << "Queue after mapping (+1): ";
+    for (int val : queue.toList()) cout << val << " ";
+    cout << endl;
+
     auto end = high_resolution_clock::now();
-
-    // Calculate the duration
-    duration<double> duration = end - start;
-    cout << "Time taken: " << duration.count() << " seconds" << endl;
+    auto diff = duration_cast<microseconds>(end - start).count();
+    cout << "Time taken: " << diff << " microseconds" << endl;
 
     return 0;
 }
