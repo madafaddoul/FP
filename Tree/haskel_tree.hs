@@ -1,3 +1,4 @@
+module HaskelTree where
 -- Define a binary tree where each node has a value and two subtrees (left and right)
 data Tree a = Empty            
             | Node a (Tree a) (Tree a)  
