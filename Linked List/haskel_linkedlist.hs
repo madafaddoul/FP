@@ -108,30 +108,3 @@ zipWithLL :: (a -> b -> c) -> LinkedList a -> LinkedList b -> LinkedList c
 zipWithLL _ Empty _ = Empty
 zipWithLL _ _ Empty = Empty
 zipWithLL f (Node v1 next1) (Node v2 next2) = Node (f v1 v2) (zipWithLL f next1 next2) 
-
--- Check if the list is sorted
-sorted :: (Ord a) => LinkedList a -> Bool
-sorted Empty = True
-sorted (Node _ Empty) = True
-sorted (Node x (Node y rest)) = x <= y && sorted (Node y rest)
-
-
--- Bubble Sort:
-bubbleSort :: (Ord a) => LinkedList a -> LinkedList a
-bubbleSort lst = if sorted lst then lst else bubbleSort (bubble lst)
---perform a single pass of bubble sort
-bubble :: (Ord a) => LinkedList a -> LinkedList a
-bubble Empty = Empty
-bubble (Node x Empty) = Node x Empty
-bubble (Node x (Node y rest))
-    | x > y     = Node y (bubble (Node x rest))
-    | otherwise = Node x (bubble (Node y rest))
-
--- Quick Sort 
-quickSort :: (Ord a) => LinkedList a -> LinkedList a
-quickSort Empty = Empty
-quickSort (Node x xs) = quickSort lesser `concatLL` Node x Empty `concatLL` quickSort greater
-  where
-    lesser = filterLL (< x) xs
-    greater = filterLL (>= x) xs
-

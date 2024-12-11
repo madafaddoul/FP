@@ -253,36 +253,3 @@ public:
 
 };
 
-int main() {
-    LinkedList list;
-    list.addFirst(3);
-    list.addFirst(2);
-    list.addFirst(1);
-    list.addLast(4);
-    list.insertAt(5, 2);
-    list.print(); 
-
-    list.updateAt(2, 6);
-    list.print(); 
-
-    cout << "Element at index 2: " << list.elementAt(2) << endl; 
-
-    list.deleteValue(6);
-    list.print(); 
-
-    cout << "Search for 3: " << (list.search(3) ? "Found" : "Not Found") << endl; 
-
-    int arr[4];
-    list.toList(arr, 4);
-    for (int i = 0; i < 4; ++i) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-
-    list.reverse();
-    list.print();
-
-    cout << "Length: " << list.size() << endl; 
-
-    return 0;
-}
