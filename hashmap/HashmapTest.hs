@@ -1,5 +1,75 @@
 import Hashmap as HM
 import Data.Maybe (isNothing)
+import System.CPUTime
+import Text.Printf
+import Control.Monad (forM_, replicateM)
+import Data.Functor ((<&>))
+import Data.Maybe (isNothing, isJust)
+import System.Random (randomRIO)
+import Data.List (nub)
+import Control.Exception (catch, SomeException)
+import Data.List (foldl')
+
+-- Timing utility
+timeIt :: String -> IO a -> IO a
+timeIt label action = do
+    start <- getCPUTime
+    result <- action
+    end <- getCPUTime
+    let diff = (fromIntegral (end - start) / (10^12)) :: Double
+    printf "%s: %0.3f sec\n" label diff
+    return result
+
+-- Random string generator
+randomString :: Int -> IO String
+randomString len = do
+    let chars = ['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']
+    sequence $ replicate len $ randomRIO (0, length chars - 1) >>= return . (chars !!)
+
+-- Modify performance test functions for better results
+testInsertPerformance :: IO ()
+testInsertPerformance = do
+    putStrLn "\nTesting Insert Performance:"
+    forM_ [1000, 10000, 100000] $ \size -> do
+        keys <- replicateM size (randomString 10)
+        values <- replicateM size (randomString 10)
+        let pairs = zip keys values
+        timeIt (show size ++ " inserts") $ do
+            let !final = foldl' (\hm (k,v) -> HM.insert k v hm) HM.empty pairs
+            putStr $ "Size: " ++ show (HM.size final) ++ " "
+            return ()
+
+testLookupPerformance :: IO ()
+testLookupPerformance = do
+    putStrLn "\nTesting Lookup Performance:"
+    -- Create smaller test data to avoid memory issues
+    keys <- replicateM 10000 (randomString 10)
+    values <- replicateM 10000 (randomString 10)
+    let !hm = foldl' (\h (k,v) -> HM.insert k v h) HM.empty (zip keys values)
+    
+    forM_ [1000, 5000, 10000] $ \lookups -> do
+        timeIt (show lookups ++ " lookups") $ do
+            let !results = length [() | k <- take lookups (cycle keys), isJust (HM.lookup k hm)]
+            putStr $ "Found: " ++ show results ++ " "
+            return ()
+
+testBulkOperations :: IO ()
+testBulkOperations = do
+    putStrLn "\nTesting Bulk Operations Performance:"
+    forM_ [1000, 5000, 10000] $ \size -> do
+        keys <- replicateM size (randomString 10)
+        values <- replicateM size (randomString 10)
+        let pairs = zip keys values
+        putStrLn $ "\nSize " ++ show size ++ ":"
+        timeIt "fromList" $ do
+            let !hm = HM.fromList pairs
+            putStr $ "Size: " ++ show (HM.size hm) ++ " "
+            return ()
+        timeIt "toList" $ do
+            let !hm = HM.fromList pairs
+            let !lst = HM.toList hm
+            putStr $ "Length: " ++ show (length lst) ++ " "
+            return ()
 
 -- Test cases for the HashMap
 testInsert :: IO ()
@@ -108,6 +178,7 @@ testMapValues = do
 -- Run all tests
 main :: IO ()
 main = do
+    putStrLn "Running functional tests:"
     testInsert
     testLookup
     testDelete
@@ -121,3 +192,8 @@ main = do
     testValues
     testSize
     testMapValues
+    
+    -- Modified performance tests with error handling
+    catch testInsertPerformance (\e -> putStrLn $ "Insert test error: " ++ show (e :: SomeException))
+    catch testLookupPerformance (\e -> putStrLn $ "Lookup test error: " ++ show (e :: SomeException))
+    catch testBulkOperations (\e -> putStrLn $ "Bulk operations test error: " ++ show (e :: SomeException))

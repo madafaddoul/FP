@@ -77,8 +77,8 @@ public:
         return map.size();
     }
 
-    // Apply a function to all values in the HashMap
-    // void mapValues(const std::function <std::string(const std::string&)>& func) {
+    // // Apply a function to all values in the HashMap
+    // void mapValues(const std::function<std::string(const std::string&)>& func) {
     //     for (auto& pair : map) {
     //         pair.second = func(pair.second);
     //     }
