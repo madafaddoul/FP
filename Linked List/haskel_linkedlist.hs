@@ -1,4 +1,3 @@
-
 data LinkedList a = Empty              
                   | Node a (LinkedList a) 
     deriving (Show, Eq) 
