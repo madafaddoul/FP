@@ -7,8 +7,7 @@ A comprehensive implementation of core data structures in C++ and Haskell, provi
 ## Project Structure
 
 ```
-```
-.
+
 ├── stacks/
 │   ├── ImperativeStack.cpp       # C++ implementation of Stack
 │   ├── Stack.hs                  # Haskell implementation of Stack
@@ -34,8 +33,6 @@ A comprehensive implementation of core data structures in C++ and Haskell, provi
 │   ├── HashMap.hs                # Haskell implementation of HashMap
 │   ├── HashMapTest.cpp           # C++ tests for HashMap
 │   └── HashMapTest.hs            # Haskell tests for HashMap
-└── README.md
-```
 └── README.md
 ```
 
