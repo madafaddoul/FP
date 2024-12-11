@@ -108,3 +108,76 @@ zipWithLL :: (a -> b -> c) -> LinkedList a -> LinkedList b -> LinkedList c
 zipWithLL _ Empty _ = Empty
 zipWithLL _ _ Empty = Empty
 zipWithLL f (Node v1 next1) (Node v2 next2) = Node (f v1 v2) (zipWithLL f next1 next2) 
+
+
+
+
+main :: IO ()
+main = do
+    -- Test addFirst
+    let list1 = addFirst 1 Empty
+    print $ "Add first 1 to empty list: " ++ show list1
+
+    -- Test addLast
+    let list2 = addLast 2 list1
+    print $ "Add last 2 to list: " ++ show list2
+
+    -- Test insertAt
+    let list3 = insertAt 1 3 list2
+    print $ "Insert 3 at position 1: " ++ show list3
+
+    -- Test updateAt
+    let list4 = updateAt 1 4 list3
+    print $ "Update position 1 to 4: " ++ show list4
+
+    -- Test elementAt
+    let elem = elementAt 1 list4
+    print $ "Element at position 1: " ++ show elem
+
+    -- Test concatLL
+    let list5 = concatLL list4 list1
+    print $ "Concatenate lists: " ++ show list5
+
+    -- Test mapLL
+    let list6 = mapLL (+1) list5
+    print $ "Map (+1) over list: " ++ show list6
+
+    -- Test filterLL
+    let list7 = filterLL (>2) list6
+    print $ "Filter elements > 2: " ++ show list7
+
+    -- Test foldLL
+    let sum = foldLL (+) 0 list7
+    print $ "Sum of elements: " ++ show sum
+
+    -- Test zipLL
+    let list8 = zipLL list7 list6
+    print $ "Zip lists: " ++ show list8
+
+    -- Test delete
+    let list9 = delete 3 list7
+    print $ "Delete first occurrence of 3: " ++ show list9
+
+    -- Test search
+    let found = search 4 list7
+    print $ "Search for 4: " ++ show found
+
+    -- Test toList
+    let list10 = toList list7
+    print $ "Convert to list: " ++ show list10
+
+    -- Test fromList
+    let list11 = fromList [5, 6, 7]
+    print $ "Convert from list [5, 6, 7]: " ++ show list11
+
+    -- Test lengthLL
+    let len = lengthLL list7
+    print $ "Length of list: " ++ show len
+
+    -- Test reverseLL
+    let list12 = reverseLL list7
+    print $ "Reverse list: " ++ show list12
+
+    -- Test zipWithLL
+    let list13 = zipWithLL (+) list7 list6
+    print $ "ZipWith (+) lists: " ++ show list13
