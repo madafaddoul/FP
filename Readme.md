@@ -261,5 +261,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Acknowledgments
 
-We want to thank our brilliant professor who gave us this project, challenging us and deepening our understanding of data structures and Git/GitHub. 
+We want to thank our professor who gave us this project, challenging us and deepening our understanding of data structures and Git/GitHub. 
 Kudos to you, Dr.
