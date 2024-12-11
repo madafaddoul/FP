@@ -261,6 +261,44 @@ void timeIt(const std::string& message, Func func) {
 }
 
 int main() {
+
+    timeIt("Complete Graph Test Suite", []() {
+        Graph g;
+        
+        timeIt("Adding 100000 vertices", [&]() {
+            for (int i = 1; i <= 100000; i++) {
+                g.addVertex(i);
+            }
+        });
+
+        timeIt("Adding 500000 random edges", [&]() {
+            for (int i = 0; i < 500000; i++) {
+                g.addEdge(rand() % 100000 + 1, rand() % 100000 + 1);
+            }
+        });
+
+        auto info = g.graphInfo();
+        std::cout << "Graph size - Vertices: " << info.first << ", Edges: " << info.second << "\n";
+
+        timeIt("Testing 10000 vertex lookups", [&]() {
+            for (int i = 0; i < 10000; i++) {
+                g.vertexExists(rand() % 150000);
+            }
+        });
+
+        timeIt("Testing 10000 edge lookups", [&]() {
+            for (int i = 0; i < 10000; i++) {
+                g.edgeExists(rand() % 100000 + 1, rand() % 100000 + 1);
+            }
+        });
+
+        timeIt("Finding 100 random paths", [&]() {
+            for (int i = 0; i < 100; i++) {
+                g.findPath(rand() % 100000 + 1, rand() % 100000 + 1);
+            }
+        });
+        });
+        
     timeIt("Graph Operations", []() {
         Graph g;
 

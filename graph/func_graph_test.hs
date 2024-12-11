@@ -13,6 +13,8 @@ timeIt action = do
 
 main :: IO ()
 main = do
+    -- Test small graph (original tests)
+    putStrLn "\nTesting small graph operations:"
     timeIt $ do
         let g = emptyGraph
         let g1 = addVertex 1 g
@@ -55,3 +57,43 @@ main = do
         -- Test all paths
         print $ getAllPaths 1 3 g5  -- Should print [[1,2,3]]
         print $ isConnected g5      -- Should print True
+    
+    -- Test medium graph (100 vertices)
+    putStrLn "\nTesting medium graph operations:"
+    timeIt $ do
+        let mediumGraph = foldr addVertex emptyGraph [1..100]
+        let mediumGraphWithEdges = foldr (\i g -> addEdge i (i+1) g) mediumGraph [1..99]
+        print $ graphInfo mediumGraphWithEdges
+        print $ findPath 1 100 mediumGraphWithEdges
+        print $ hasCycle mediumGraphWithEdges
+        print $ isConnected mediumGraphWithEdges
+    
+    -- Test large graph (1000 vertices)
+    putStrLn "\nTesting large graph operations:"
+    timeIt $ do
+        let largeGraph = foldr addVertex emptyGraph [1..1000]
+        let largeGraphWithEdges = foldr (\i g -> addEdge i (i+1) g) largeGraph [1..999]
+        print $ graphInfo largeGraphWithEdges
+        print $ findPath 1 1000 largeGraphWithEdges
+        print $ hasCycle largeGraphWithEdges
+        print $ isConnected largeGraphWithEdges
+    
+    -- Test very large graph (5000 vertices)
+    putStrLn "\nTesting very large graph operations:"
+    timeIt $ do
+        let veryLargeGraph = foldr addVertex emptyGraph [1..5000]
+        let veryLargeGraphWithEdges = foldr (\i g -> addEdge i (i+1) g) veryLargeGraph [1..4999]
+        print $ graphInfo veryLargeGraphWithEdges
+        print $ findPath 1 5000 veryLargeGraphWithEdges
+        print $ hasCycle veryLargeGraphWithEdges
+        print $ isConnected veryLargeGraphWithEdges
+    
+    -- Test complex operations on medium graph
+    putStrLn "\nTesting complex operations on medium graph:"
+    timeIt $ do
+        let g = foldr addVertex emptyGraph [1..100]
+        let g' = foldr (\(x,y) g -> addEdge x y g) g [(x,y) | x <- [1..50], y <- [51..100], x `mod` 5 == 0]
+        print $ graphInfo g'
+        print $ length $ getAllPaths 1 100 g'
+        print $ neighbors 25 g'
+        print $ outDegree 25 g'
