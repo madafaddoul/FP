@@ -84,3 +84,18 @@ mapTree f (Node v left right) = Node (f v) (mapTree f left) (mapTree f right)
 foldTree :: (b -> a -> b) -> b -> Tree a -> b
 foldTree _ acc Empty = acc
 foldTree f acc (Node v left right) = foldTree f (f (foldTree f acc left) v) right
+
+
+-- Sample tree for testing
+sampleTree :: Tree Int
+sampleTree = Node 1 (Node 2 Empty Empty) (Node 3 Empty Empty)
+
+
+main :: IO ()
+main = do
+    putStrLn "Inorder traversal:"
+    print (inorder sampleTree)
+    putStrLn "Preorder traversal:"
+    print (preorder sampleTree)
+    putStrLn "Postorder traversal:"
+    print (postorder sampleTree)
